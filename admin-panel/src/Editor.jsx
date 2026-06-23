@@ -176,18 +176,47 @@ export default function Editor() {
   };
 
   const handleExport = async () => {
-    // Convert logo to base64 so the exported file is fully self-contained
-    const logoBase64 = await toBase64DataUrl(logoUrl);
-    const htmlString = generateHtml(data, logoBase64);
-    const blob = new Blob([htmlString], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Quotation_${data.clientName.replace(/\s+/g, '_')}_${data.projectDate.replace(/\s+/g, '_')}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setSaving(true);
+    try {
+      // Convert logo to base64 so the exported file is fully self-contained
+      const logoBase64 = await toBase64DataUrl(logoUrl);
+
+      const logoPaths = [
+        'logos/l%26t.jpg',
+        'logos/waree.jpg',
+        'logos/kec.jpg',
+        'logos/Dr.%20C.V.%20Raman%20University%20logo%20PNG%20transparent.jpg',
+        'logos/monte%20carlo.jpg',
+        'logos/rayzon%20solar.jpg',
+        'logos/sbi.jpg',
+        'logos/canara%20bank.jpg',
+        'logos/ecobank.jpg',
+        'logos/Au%20bank.jpg',
+        'clients-affiliations.png',
+        ...Array.from({ length: 20 }, (_, i) => `exec-images/${i + 1}.png`),
+      ];
+      
+      const logoMap = {};
+      for (const path of logoPaths) {
+         logoMap[path] = await toBase64DataUrl(`/${path}`);
+      }
+
+      const htmlString = generateHtml(data, logoBase64, logoMap);
+      const blob = new Blob([htmlString], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Quotation_${data.clientName.replace(/\s+/g, '_')}_${data.projectDate.replace(/\s+/g, '_')}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error generating PDF HTML:', err);
+      alert('Error generating PDF HTML: ' + err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (loading)
