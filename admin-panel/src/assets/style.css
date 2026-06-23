@@ -818,17 +818,32 @@ section{padding:78px 28px;}
   .clients-image-wrap { border: none; border-radius: 0; }
   .clients-affiliations-img { width: 100%; height: auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  /* Exec Methodology — illustration phases */
-  .em-phase { -webkit-print-color-adjust: exact; print-color-adjust: exact; border: 2px solid #C97F1E !important; background: #fff !important; padding: 14px 12px; margin-bottom: 18px; }
-  .em-phase-tag { background: #0B2818 !important; color: #E8A33D !important; }
-  .em-badge { background: #0B2818 !important; color: #E8A33D !important; border-color: #E8A33D !important; }
-  .em-snake { width: 100%; }
-  .em-snake td { padding: 4px 3px; }
-  .em-art { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .em-art svg, .em-art img { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .em-turn-r { border-right: 2px dashed #C97F1E !important; border-bottom: 2px dashed #C97F1E !important; }
-  .em-plain-grid { grid-template-columns: repeat(3,1fr); gap: 10px; }
-  .em-phase, .em-card { page-break-inside: avoid; break-inside: avoid; }
+  /* Exec Methodology — single image */
+  #execution {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding: 8mm 7.5mm !important;
+  }
+  .phase-img-wrap {
+    border: none;
+    border-radius: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-height: 220mm;
+    overflow: hidden;
+  }
+  .phase-img {
+    width: 100%;
+    max-height: 235mm;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: top left;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 
 
   /* ══ SECTION PAGE BREAKS ══
@@ -981,22 +996,7 @@ section{padding:78px 28px;}
     break-after: avoid;
   }
 
-  /* ══ EXEC METHODOLOGY ══ */
-  .em-phase {
-    border: 2px solid #C97F1E !important;
-    background: #fff !important;
-    padding: 14px 12px;
-    margin-bottom: 18px;
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-  .em-phase-tag { background: #0B2818 !important; color: #E8A33D !important; }
-  .em-badge { background: #0B2818 !important; color: #E8A33D !important; border-color: #E8A33D !important; }
-  .em-snake { width: 100%; }
-  .em-snake td { padding: 4px 3px; }
-  .em-turn-r { border-right: 2px dashed #C97F1E !important; border-bottom: 2px dashed #C97F1E !important; }
-  .em-plain-grid { grid-template-columns: repeat(3,1fr); gap: 10px; }
-  .em-card { page-break-inside: avoid; break-inside: avoid; }
+
 
   /* ══ ABOUT SECTION COMPACT ══ */
   #about .wrap { padding: 8mm 7.5mm; }

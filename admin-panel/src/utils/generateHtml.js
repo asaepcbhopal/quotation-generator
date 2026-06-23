@@ -1,4 +1,7 @@
 // Import the raw CSS string from the original style.css
+}
+
+// Import the raw CSS string from the original style.css
 // This is bundled into the exported HTML so it is fully self-contained.
 import cssString from '../assets/style.css?raw';
 
@@ -503,83 +506,16 @@ ${cssString}
       <h2>Project Execution Methodology</h2>
       <p>A 20-step end-to-end delivery process across 4 phases — refined over 150+ commissioned solar projects.</p>
     </div>
-
-    <!-- ───── PHASE 1 ───── -->
-    <div class="em-phase">
-      <div class="em-phase-title"><span class="em-phase-tag">Phase I</span>Site Preparation</div>
-      <table class="em-snake" cellspacing="0" cellpadding="0"><tbody>
-        <tr>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">1</span><div class="em-art"><img src="${logoMap['exec-images/1.png']}" /></div><div class="em-lbl">Site Survey</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">2</span><div class="em-art"><img src="${logoMap['exec-images/2.png']}" /></div><div class="em-lbl">Leveling of Site</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">3</span><div class="em-art"><img src="${logoMap['exec-images/3.png']}" /></div><div class="em-lbl">Leveling &amp; Grading</div></div></td>
-          <td class="em-tc" rowspan="2"><div class="em-turn-r"></div></td>
-        </tr>
-        <tr>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">6</span><div class="em-art"><img src="${logoMap['exec-images/6.png']}" /></div><div class="em-lbl">Auguring - Foundation Drilling</div></div></td>
-          <td class="em-cc"><div class="em-arr rev">&#8592;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">5</span><div class="em-art"><img src="${logoMap['exec-images/5.png']}" /></div><div class="em-lbl">Marking of Mounting Structure</div></div></td>
-          <td class="em-cc"><div class="em-arr rev">&#8592;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">4</span><div class="em-art"><img src="${logoMap['exec-images/4.png']}" /></div><div class="em-lbl">Site After Leveling</div></div></td>
-        </tr>
-      </tbody></table>
+    <div class="phase-img-wrap">
+      <img
+        src="${logoMap['phase.png'] || 'phase.png'}"
+        alt="Project Execution Methodology — 4 phases, 20 steps"
+        class="phase-img"
+      />
     </div>
-
-    <!-- ───── PHASE 2 ───── -->
-    <div class="em-phase">
-      <div class="em-phase-title"><span class="em-phase-tag">Phase II</span>Structure &amp; Cabling</div>
-      <table class="em-snake" cellspacing="0" cellpadding="0"><tbody>
-        <tr>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">7</span><div class="em-art"><img src="${logoMap['exec-images/7.png']}" /></div><div class="em-lbl">Column Post Installation</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">8</span><div class="em-art"><img src="${logoMap['exec-images/8.png']}" /></div><div class="em-lbl">MMS Erection</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">9</span><div class="em-art"><img src="${logoMap['exec-images/9.png']}" /></div><div class="em-lbl">Structure &amp; PV Module Alignment</div></div></td>
-          <td class="em-tc" rowspan="2"><div class="em-turn-r"></div></td>
-        </tr>
-        <tr>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">12</span><div class="em-art"><img src="${logoMap['exec-images/12.png']}" /></div><div class="em-lbl">DC Cable Termination - SMB/SCB Work</div></div></td>
-          <td class="em-cc"><div class="em-arr rev">&#8592;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">11</span><div class="em-art"><img src="${logoMap['exec-images/11.png']}" /></div><div class="em-lbl">DC &amp; AC Cable Laying</div></div></td>
-          <td class="em-cc"><div class="em-arr rev">&#8592;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">10</span><div class="em-art"><img src="${logoMap['exec-images/10.png']}" /></div><div class="em-lbl">DC Cable Laying &amp; Conduit Dressing</div></div></td>
-        </tr>
-      </tbody></table>
-    </div>
-
-    <!-- ───── PHASE 3 ───── -->
-    <div class="em-phase">
-      <div class="em-phase-title"><span class="em-phase-tag">Phase III</span>Transformer Yard &amp; Grid Connection</div>
-      <table class="em-snake" cellspacing="0" cellpadding="0"><tbody>
-        <tr>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">13</span><div class="em-art"><img src="${logoMap['exec-images/13.png']}" /></div><div class="em-lbl">INV Transformer Yard</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">14</span><div class="em-art"><img src="${logoMap['exec-images/14.png']}" /></div><div class="em-lbl">Control Room Construction</div></div></td>
-          <td class="em-cc"><div class="em-arr">&#8594;</div></td>
-          <td class="em-sc"><div class="em-card"><span class="em-badge">15</span><div class="em-art"><img src="${logoMap['exec-images/15.png']}" /></div><div class="em-lbl">Cable Laying Work - Control Room</div></div></td>
-          <td class="em-tc" rowspan="2"><div class="em-turn-r"></div></td>
-        </tr>
-        <tr>
-          <td class="em-sc" colspan="3" style="text-align:center;padding-top:10px;"><div class="em-card" style="max-width:240px;margin:0 auto;"><span class="em-badge">16</span><div class="em-art"><img src="${logoMap['exec-images/16.png']}" /></div><div class="em-lbl">Transmission Line</div></div></td>
-          <td class="em-cc"></td>
-        </tr>
-      </tbody></table>
-    </div>
-
-    <!-- ───── PHASE 4 ───── -->
-    <div class="em-phase">
-      <div class="em-phase-title"><span class="em-phase-tag">Phase IV</span>Testing &amp; Commissioning</div>
-      <div class="em-plain-grid" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="em-card"><span class="em-badge">17</span><div class="em-art"><img src="${logoMap['exec-images/17.png']}" /></div><div class="em-lbl">DC Voltage Testing</div></div>
-        <div class="em-card"><span class="em-badge">18</span><div class="em-art"><img src="${logoMap['exec-images/18.png']}" /></div><div class="em-lbl">Control Panel Commissioning</div></div>
-        <div class="em-card"><span class="em-badge">19</span><div class="em-art"><img src="${logoMap['exec-images/19.png']}" /></div><div class="em-lbl">Insulation &amp; Field Testing</div></div>
-        <div class="em-card"><span class="em-badge">20</span><div class="em-art"><img src="${logoMap['exec-images/20.png']}" /></div><div class="em-lbl">Final Commissioning</div></div>
-      </div>
-    </div>
-
   </div>
 </section>
+
 
 <!-- ═══════════════════ 09 — TRACK RECORD (FIXED) ═══════════════════ -->
 <section class="alt">
