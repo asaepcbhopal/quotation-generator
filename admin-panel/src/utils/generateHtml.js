@@ -135,7 +135,8 @@ export function generateHtml(data, logoSrc = '', logoMap = {}) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Lock viewport to desktop width to force perfect A4 rendering on mobile devices -->
+<meta name="viewport" content="width=1024">
 <title>${data.title} — ASA EPC</title>
 <style>
 ${cssString}
@@ -652,6 +653,14 @@ if (window.matchMedia) {
     mql.addListener(handler); // Safari < 14 fallback
   }
 }
+
+// ── 7. Auto-trigger print for mobile users viewing the HTML file directly
+window.onload = function() {
+  // Wait slightly to ensure fonts are fully rendered
+  setTimeout(function() {
+    safePrint();
+  }, 800);
+};
 </script>
 </body>
 </html>`;

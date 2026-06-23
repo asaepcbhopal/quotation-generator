@@ -594,11 +594,13 @@ section{padding:78px 28px;}
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
-  body {
+  html, body {
+    width: 210mm !important;
+    max-width: 210mm !important;
     background: white;
     font-size: 10pt;
     color: #111;
-    margin: 0;
+    margin: 0 auto !important;
     padding: 0;
   }
 
