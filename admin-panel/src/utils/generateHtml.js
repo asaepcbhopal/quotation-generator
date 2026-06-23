@@ -1,7 +1,4 @@
 // Import the raw CSS string from the original style.css
-}
-
-// Import the raw CSS string from the original style.css
 // This is bundled into the exported HTML so it is fully self-contained.
 import cssString from '../assets/style.css?raw';
 
