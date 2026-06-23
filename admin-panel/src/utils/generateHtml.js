@@ -639,31 +639,83 @@ ${cssString}
 <!-- ═══════════════════ ACCEPT BAR (DYNAMIC TOTAL) ═══════════════════ -->
 <div class="accept-bar">
   <div class="ab-left">Grand Total <strong>${fmt(grandTotal)}</strong></div>
-  <button class="ab-btn" onclick="window.print()">Download / Print</button>
+  <button class="ab-btn" onclick="safePrint()">Download / Print</button>
 </div>
 
 <script>
-// Scroll reveal
-const revealEls = document.querySelectorAll('section');
-revealEls.forEach(el => el.classList.add('reveal'));
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
-}, { threshold: 0.08 });
-revealEls.forEach(el => obs.observe(el));
-
-// ── PRINT FIX: IntersectionObserver doesn't fire during print ──
-// Force ALL sections visible the moment print dialog opens.
-function makeAllVisible() {
-  document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
-}
-window.addEventListener('beforeprint', makeAllVisible);
-// Also trigger immediately so the first print attempt works even without scrolling
-document.addEventListener('DOMContentLoaded', function() {
-  // Small delay so observer can catch the visible sections first, then we ensure rest are visible on print
-  window.matchMedia('print').addListener(function(mq) {
-    if (mq.matches) makeAllVisible();
-  });
+// ── 1. Immediately remove the reveal class from ALL elements so that
+//       opacity:0 never causes blank pages, especially on mobile browsers.
+//       We only animate when the user is actually scrolling (not on print).
+document.querySelectorAll('section').forEach(function(el) {
+  el.classList.add('reveal');
 });
+
+// ── 2. Intersection Observer for scroll animation (screen only)
+if (typeof IntersectionObserver !== 'undefined') {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) e.target.classList.add('is-visible');
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+}
+
+// ── 3. Force ALL elements visible before any print event fires
+function makeAllVisible() {
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    el.classList.add('is-visible');
+  });
+}
+
+// ── 4. Wait for every <img> to fully load before triggering print.
+//       This prevents blank image boxes on mobile (Safari/Chrome Android).
+function waitForImages(callback) {
+  var imgs = Array.prototype.slice.call(document.querySelectorAll('img'));
+  if (!imgs.length) { callback(); return; }
+  var loaded = 0;
+  var total = imgs.length;
+  function onLoad() {
+    loaded++;
+    if (loaded >= total) callback();
+  }
+  imgs.forEach(function(img) {
+    if (img.complete && img.naturalWidth > 0) {
+      onLoad();
+    } else {
+      img.addEventListener('load', onLoad);
+      img.addEventListener('error', onLoad); // don't hang on broken images
+    }
+  });
+}
+
+// ── 5. Public print function called by the Download/Print button
+function safePrint() {
+  makeAllVisible();
+  waitForImages(function() {
+    // Small rAF delay so browser can repaint before print dialog opens
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        window.print();
+      });
+    });
+  });
+}
+
+// ── 6. Also handle Ctrl+P / native print shortcut
+window.addEventListener('beforeprint', makeAllVisible);
+
+// matchMedia-based print detection (non-deprecated, supports mobile)
+if (window.matchMedia) {
+  var mql = window.matchMedia('print');
+  var handler = function(mq) {
+    if (mq.matches) makeAllVisible();
+  };
+  if (mql.addEventListener) {
+    mql.addEventListener('change', handler);
+  } else if (mql.addListener) {
+    mql.addListener(handler); // Safari < 14 fallback
+  }
+}
 </script>
 </body>
 </html>`;

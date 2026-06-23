@@ -587,8 +587,33 @@ section{padding:78px 28px;}
 /* ===== PRINT / PDF OPTIMIZATION ===== */
 @media print {
   @page { size: A4; margin: 0; }
-  body { background: white; font-size: 10pt; color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* ── Base reset ── */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  body {
+    background: white;
+    font-size: 10pt;
+    color: #111;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Hide screen-only chrome ── */
   .nav, .accept-bar { display: none !important; }
+
+  /* ── Force all scroll-reveal elements visible ── */
+  .reveal, .reveal.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* ── Hide screen hero — replaced by .cover-page ── */
+  .hero { display: none !important; }
 
   /* ── COVER PAGE ── */
   .cover-page {
@@ -805,15 +830,99 @@ section{padding:78px 28px;}
   .em-plain-grid { grid-template-columns: repeat(3,1fr); gap: 10px; }
   .em-phase, .em-card { page-break-inside: avoid; break-inside: avoid; }
 
-  /* Hide the web hero — replaced by .cover-page */
-  .hero { display: none !important; }
 
-  /* Sections after cover */
-  section { padding: 12mm 7.5mm; background: transparent !important; page-break-before: always; break-before: page; }
+  /* ══ SECTION PAGE BREAKS ══
+     Every <section> starts on a fresh page.
+     break-inside:avoid keeps the section's own heading + content together.
+  */
+  section {
+    padding: 12mm 7.5mm;
+    background: transparent !important;
+    page-break-before: always;
+    break-before: page;
+    page-break-inside: avoid;   /* prevents heading/intro splitting at top */
+    break-inside: avoid;
+  }
+  footer {
+    page-break-before: always;
+    break-before: page;
+  }
   .alt { background: transparent !important; }
 
-  /* Prevent elements from breaking awkwardly */
-  .summary-card, .spec-item, .vendor-card, .scope-block, .warranty-card, .proj-card, .exec-step, tr, .hero-meta {
+  /* ══ CLIENTS & AFFILIATIONS ══
+     The section has break-inside:avoid so heading + image always share the same page.
+     Additionally force the image to never break away from its wrapper.
+  */
+  #clients-network {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .clients-image-wrap {
+    border: none;
+    border-radius: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .clients-affiliations-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* ══ COMMERCIAL OFFER ══
+     Keep the full table + grand total banner on the same page run.
+     The table rows are allowed to paginate, but the summary rows (Total / GST / Grand Total)
+     and the .total-banner block must never be orphaned on a new page.
+  */
+  .commercial-table-wrap {
+    border: 1px solid #ccc;
+    overflow: visible !important;
+    page-break-inside: auto;   /* rows CAN paginate across pages… */
+  }
+  .commercial-table { min-width: 100%; }
+  .commercial-table tr.sum,
+  .commercial-table tr.grand {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+  .total-banner {
+    background: #0B2818 !important;
+    color: #fff !important;
+    border: none;
+    padding: 16px 20px;
+    margin-top: 12px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-before: avoid;  /* banner never starts a new page alone */
+    break-before: avoid;
+  }
+  .total-banner .tb-value { color: #E8A33D !important; }
+  .total-banner .tb-label { color: rgba(255,255,255,0.7) !important; }
+  .total-banner .tb-sub   { color: rgba(255,255,255,0.55) !important; }
+
+  /* ══ GANTT ══ */
+  .gantt-wrap { border: 1px solid #ccc; overflow: visible !important; }
+  .gantt { min-width: 100%; }
+
+  /* ══ SCOPE TABLE PRINT COLOURS ══ */
+  .scope-table th { background: #f0f0f0 !important; color: #111 !important; }
+  .scope-title { background: #eee !important; color: #111 !important; border: 1px solid #ccc; padding: 4px 10px; }
+
+  /* ══ FOOTER ══ */
+  .closing { background: transparent !important; color: #111; padding: 15px 0; }
+  .closing p, .closing a, .closing-col-label, .closing-bottom { color: #444; }
+
+  /* ══ GENERAL ANTI-ORPHAN RULES ══ */
+  .summary-card, .spec-item, .vendor-card, .warranty-card,
+  .proj-card, .exec-step, .scope-block, .hero-meta {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  tr {
     page-break-inside: avoid;
     break-inside: avoid;
   }
@@ -822,38 +931,46 @@ section{padding:78px 28px;}
     break-after: avoid;
   }
 
-  .scope-table th { background: #f0f0f0 !important; color: #111 !important; }
-  .scope-title { background: #eee !important; color: #111 !important; border: 1px solid #ccc; padding: 4px 10px; }
+  /* ══ EXEC METHODOLOGY ══ */
+  .em-phase {
+    border: 2px solid #C97F1E !important;
+    background: #fff !important;
+    padding: 14px 12px;
+    margin-bottom: 18px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .em-phase-tag { background: #0B2818 !important; color: #E8A33D !important; }
+  .em-badge { background: #0B2818 !important; color: #E8A33D !important; border-color: #E8A33D !important; }
+  .em-snake { width: 100%; }
+  .em-snake td { padding: 4px 3px; }
+  .em-turn-r { border-right: 2px dashed #C97F1E !important; border-bottom: 2px dashed #C97F1E !important; }
+  .em-plain-grid { grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .em-card { page-break-inside: avoid; break-inside: avoid; }
 
-  .gantt-wrap, .commercial-table-wrap { border: 1px solid #ccc; overflow: visible !important; }
-  .gantt, .commercial-table { min-width: 100%; }
+  /* ══ ABOUT SECTION COMPACT ══ */
+  #about .wrap { padding: 8mm 7.5mm; }
+  #about .lede { font-size: 14.5px; margin-bottom: 8px; }
+  #about h2 { font-size: 20px; margin-bottom: 8px; }
+  #about .pillar-list { margin-top: 10px; gap: 8px; }
+  #about .waaree-callout { margin-top: 16px; padding: 12px 18px; }
+  #about .vm-grid { margin-top: 16px; gap: 12px; grid-template-columns: 1fr 1fr !important; display: grid !important; }
+  #about .vm-card { padding: 16px 18px; }
+  #about .vm-card-text { font-size: 12.5px; line-height: 1.5; }
+  #about .core-values-wrap { margin-top: 16px; }
+  #about .cv-strip { grid-template-columns: repeat(5, 1fr) !important; display: grid !important; }
+  #about .cv-value { padding: 10px 8px; }
 
-  .total-banner { background: #f9f9f9 !important; color: #111 !important; border: 1px solid #aaa; padding: 15px; margin-top: 15px; }
-  .total-banner .tb-value { color: #111 !important; }
-  .total-banner .tb-label, .total-banner .tb-sub { color: #333 !important; }
-
-  .closing { background: transparent !important; color: #111; padding: 15px 0; }
-  .closing p, .closing a, .closing-col-label, .closing-bottom { color: #444; }
-
+  /* ══ MISC ══ */
+  .cv-meta-item { background: #FAFDF8 !important; border-left: 3px solid #E8A33D !important; }
   .footer-logo { height: 36px; }
   .spec-item { padding: 10px 15px; }
   .info-grid { grid-template-columns: 1.1fr 1fr !important; gap: 20px; }
   .exec-step { padding-bottom: 15px; }
+  .styled-table-wrap { overflow: visible !important; }
 }
 
 
+/* ── Screen reveal animation ── */
 .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
 .reveal.is-visible{opacity:1; transform:translateY(0);}
-
-/* ── Print: force all sections visible (IntersectionObserver doesn't fire during print) ── */
-@media print {
-  .reveal, .reveal.is-visible {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-  .nav, .accept-bar { display: none !important; }
-  .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  section, footer { page-break-inside: avoid; }
-  .gantt-wrap, .commercial-table-wrap, .styled-table-wrap { overflow: visible !important; }
-}
