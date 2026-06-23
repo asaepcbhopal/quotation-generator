@@ -159,22 +159,18 @@ ${cssString}
   <div class="cv-bottom">
     <div class="cv-meta-grid">
       <div class="cv-meta-item">
-        <div class="cv-meta-icon">📋</div>
         <div class="cv-meta-label">Prepared For</div>
         <div class="cv-meta-value">${data.clientName}</div>
       </div>
       <div class="cv-meta-item">
-        <div class="cv-meta-icon">📍</div>
         <div class="cv-meta-label">Site Location</div>
         <div class="cv-meta-value">${data.location}</div>
       </div>
       <div class="cv-meta-item">
-        <div class="cv-meta-icon">📅</div>
         <div class="cv-meta-label">Offer Date</div>
         <div class="cv-meta-value">${data.projectDate}</div>
       </div>
       <div class="cv-meta-item">
-        <div class="cv-meta-icon">⚡</div>
         <div class="cv-meta-label">Project Scheme</div>
         <div class="cv-meta-value">PM-${data.scheme}</div>
       </div>
