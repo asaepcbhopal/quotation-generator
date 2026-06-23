@@ -833,15 +833,18 @@ section{padding:78px 28px;}
 
   /* ══ SECTION PAGE BREAKS ══
      Every <section> starts on a fresh page.
-     break-inside:avoid keeps the section's own heading + content together.
+     break-inside is set to AUTO so that long sections (commercial table, execution
+     methodology) can flow across pages naturally. Only short sections get avoid.
   */
   section {
-    padding: 12mm 7.5mm;
+    padding: 10mm 7.5mm;
     background: transparent !important;
     page-break-before: always;
     break-before: page;
-    page-break-inside: avoid;   /* prevents heading/intro splitting at top */
-    break-inside: avoid;
+    /* Allow long sections to span multiple pages — individual elements inside
+       carry their own break-inside:avoid rules below */
+    page-break-inside: auto;
+    break-inside: auto;
   }
   footer {
     page-break-before: always;
@@ -849,60 +852,107 @@ section{padding:78px 28px;}
   }
   .alt { background: transparent !important; }
 
-  /* ══ CLIENTS & AFFILIATIONS ══
-     The section has break-inside:avoid so heading + image always share the same page.
-     Additionally force the image to never break away from its wrapper.
+  /* ══ CLIENTS & AFFILIATIONS — FIT ENTIRE SECTION ON ONE PAGE ══
+
+     ROOT CAUSE of the blank page:
+       break-inside:avoid on a container taller than one A4 page is *ignored*
+       by browsers — they still break it, usually right after the heading,
+       which is why OUR NETWORK heading appeared alone on one page.
+
+     FIX: Constrain the image so the whole section (heading ~30mm + padding ~20mm)
+     always fits within one 297mm A4 page. Max usable height ≈ 247mm.
+     The image scales down via max-height + object-fit:contain.
   */
   #clients-network {
+    /* Force one-page: padding + heading + image must all fit */
     page-break-inside: avoid;
     break-inside: avoid;
+    /* Tight padding so the image has maximum room */
+    padding: 8mm 7.5mm !important;
   }
   .clients-image-wrap {
     border: none;
     border-radius: 0;
     page-break-inside: avoid;
     break-inside: avoid;
+    /* The wrap clips the image to the remaining page height */
+    max-height: 220mm;
+    overflow: hidden;
   }
   .clients-affiliations-img {
     width: 100%;
+    /* Hard cap: heading ≈ 24mm + padding 16mm + section-num 8mm = 48mm used.
+       Remaining on A4 (297mm) ≈ 249mm. Keep a 10mm safety margin → 239mm. */
+    max-height: 235mm;
     height: auto;
     display: block;
+    object-fit: contain;
+    object-position: top left;
     page-break-inside: avoid;
     break-inside: avoid;
   }
 
   /* ══ COMMERCIAL OFFER ══
-     Keep the full table + grand total banner on the same page run.
-     The table rows are allowed to paginate, but the summary rows (Total / GST / Grand Total)
-     and the .total-banner block must never be orphaned on a new page.
+
+     ROOT CAUSE of the split banner:
+       The <section> break-inside:avoid was conflicting with a table that
+       is longer than one page — the browser ignored the avoid and picked
+       the worst split point (right before the banner).
+
+     FIX: Allow the table to paginate freely (break-inside:auto on the section
+     handles this now). Only the three summary rows (Total / GST / Grand Total)
+     and the .total-banner are locked together with break-before:avoid.
+
+     Additionally, we print the section heading in a compact chip so it takes
+     minimal vertical space and leaves maximum room for the table.
   */
+  #commercial {
+    padding: 8mm 7.5mm !important;
+  }
   .commercial-table-wrap {
     border: 1px solid #ccc;
     overflow: visible !important;
-    page-break-inside: auto;   /* rows CAN paginate across pages… */
+    page-break-inside: auto;  /* rows CAN span pages */
   }
-  .commercial-table { min-width: 100%; }
+  .commercial-table {
+    min-width: 100%;
+    font-size: 9pt;    /* slightly tighter so fewer rows need to paginate */
+  }
+  .commercial-table th {
+    padding: 8px 10px !important;
+    font-size: 8pt !important;
+  }
+  .commercial-table td {
+    padding: 7px 10px !important;
+    font-size: 9pt !important;
+  }
+  /* Summary block — Total + GST + Grand Total must never split */
+  .commercial-table tr.sum:first-of-type {
+    page-break-before: auto;  /* start of the summary group can move to next page */
+    break-before: auto;
+  }
   .commercial-table tr.sum,
   .commercial-table tr.grand {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-before: avoid;  /* keeps GST row after Total row, Grand after GST */
+    break-before: avoid;
+  }
+  /* .total-banner must immediately follow the table — no page break between them */
+  .total-banner {
+    background: #0B2818 !important;
+    color: #fff !important;
+    border: none;
+    padding: 12px 16px;
+    margin-top: 8px;
     page-break-inside: avoid;
     break-inside: avoid;
     page-break-before: avoid;
     break-before: avoid;
   }
-  .total-banner {
-    background: #0B2818 !important;
-    color: #fff !important;
-    border: none;
-    padding: 16px 20px;
-    margin-top: 12px;
-    page-break-inside: avoid;
-    break-inside: avoid;
-    page-break-before: avoid;  /* banner never starts a new page alone */
-    break-before: avoid;
-  }
-  .total-banner .tb-value { color: #E8A33D !important; }
-  .total-banner .tb-label { color: rgba(255,255,255,0.7) !important; }
-  .total-banner .tb-sub   { color: rgba(255,255,255,0.55) !important; }
+  .total-banner .tb-value { color: #E8A33D !important; font-size: 18pt !important; }
+  .total-banner .tb-label { color: rgba(255,255,255,0.7) !important; font-size: 8pt !important; }
+  .total-banner .tb-sub   { color: rgba(255,255,255,0.55) !important; font-size: 8pt !important; }
 
   /* ══ GANTT ══ */
   .gantt-wrap { border: 1px solid #ccc; overflow: visible !important; }
